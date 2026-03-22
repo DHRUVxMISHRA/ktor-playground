@@ -61,7 +61,7 @@ fun Application.configureRouting() {
             call.respondText("testing dynamic routing, text api response")
 //            http://127.0.0.1:8080/blogs/test for this end point
 //            testing dynamic routing, text api response will be the response
-//            we can also hit the endpont http://127.0.0.1:8080/blogsfdfdf/test the response will be same
+//            we can also hit the endpoint http://127.0.0.1:8080/blogsfdfdf/test the response will be same
 //            since it is ending with /test
         }
 
@@ -108,6 +108,30 @@ fun Application.configureRouting() {
 
 
 //        Nested routing
+//          route("accounts"){
+////              accounts/users/{id} creating
+////              accounts/users/{id} deleting
+//              route("users"){
+//                  get { }
+//                  get("{id}"){ }
+//                  post(""){ }
+//                  patch("{id}"){}
+//              }
+//
+////              accounts/auth/login
+////              accounts/auth/signup
+//              route("auth"){
+//                  post("login") {  }
+//                  post("signup") {  }
+//              }
+////              we can do it here but for systematic arrangement we created a function below for handling all
+////              account related routes
+//          }
+
+        accountRoutes()
+//        now like this we can make function for dynamic and type safe route as well an invoke that function here
+//        typeSafeRoutes()
+//        dynamicRoutes()
 
     }
 
@@ -125,4 +149,86 @@ class Blogs(val sort : String? = "new"){
 //    the reason to take parent Blogs as parameter of data class Blog is that without it we wont be
 //    able to link this id with the earlier path blogs, we can give any name to parent variable ,
 //    in short we need a default instance of the  parent class we are   referring in the path
+}
+
+//        Nested routing
+// we have to create the function with Route. since it has the context for the route and we are declaring routes in this
+//function
+fun Route.accountRoutes(){
+//    here we put all account related route
+    route("accounts"){
+//              accounts/users/{id} creating
+//              accounts/users/{id} deleting
+        route("users"){
+            get { }
+            get("{id}"){ }
+            post(""){ }
+            patch("{id}"){}
+        }
+
+//              accounts/auth/login
+//              accounts/auth/signup
+        route("auth"){
+            post("login") {  }
+            post("signup") {  }
+        }
+
+    }
+}
+
+fun Route.dynamicRoutes(){
+
+//        dynamic routing
+    get(Regex(".+/test")) {//If you wrote something like .+/test, that looks like a path pattern (regular expression)
+//            if any end point end with /test then this get request will response to that call
+        call.respondText("testing dynamic routing, text api response")
+//            http://127.0.0.1:8080/blogs/test for this end point
+//            testing dynamic routing, text api response will be the response
+//            we can also hit the endpoint http://127.0.0.1:8080/blogsfdfdf/test the response will be same
+//            since it is ending with /test
+    }
+    //        for creating 3 different version of an end point
+//        api/v1/users
+//        api/v2/users
+//        api/v3/users
+//        one option is to define three diffrent paths for these route
+//        other option is to use dynamic route
+    get(Regex("api/(?<apiVersion>v[1-3])/users")){//Regex(".+api/(?<apiVersion>v[1-3])/users") can also write this to make a path pattern (regular expression)
+//        by using this we are specifying that we will reference v1,v2 and v3 using the path parameter
+//        apiVersion and the number can go to 1 to 3 ([1-3])
+        val version = call.pathParameters["apiVersion"]
+        call.respondText("Api version is $version")
+    }
+}
+
+fun Route.typeSafeRoutes(){
+
+
+//        using the type safe routing
+    get<Blogs>{ blogs ->
+        //this one is for passing the query
+        val sort = blogs.sort
+        call.respondText(" Sort order: $sort")
+//           endpoint :-http://127.0.0.1:8080/blogs
+//           response :- Sort order: new
+
+//in the below endpoint we overwrite the default value of sort from new to all
+//           endpoint :-http://127.0.0.1:8080/blogs?sort=all
+//           response :- Sort order: all
+    }
+
+//        now for retrieving the path parameter
+    delete<Blogs.Blog> {blog->
+        val id = blog.id
+//            now if here i want the sort value here  since we are making request for Blogs.Blog
+//            so the method will be different here like:-
+        val sort = blog.parent.sort
+        call.respondText("Blog id: $id sorting : $sort")
+//            endpoint:-http://127.0.0.1:8080/blogs/4343
+//            response:-Blog id: 4343 sorting : new
+
+//in the below endpoint we overwrite the default value of sort from new to all
+//            endpoint:-http://127.0.0.1:8080/blogs/34343?sort=all
+//            response:-Blog id: 34343 sorting : all
+    }
 }
