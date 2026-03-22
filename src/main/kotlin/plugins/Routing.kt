@@ -4,10 +4,22 @@ package com.example.plugins
 import io.ktor.http.*
 import io.ktor.resources.*
 import io.ktor.server.application.*
+import io.ktor.server.http.content.file
+import io.ktor.server.request.receive
+import io.ktor.server.request.receiveChannel
+import io.ktor.server.request.receiveStream
+import io.ktor.server.request.receiveText
 import io.ktor.server.resources.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.routing.get
+import io.ktor.util.cio.writeChannel
+import io.ktor.utils.io.copyAndClose
+import io.ktor.utils.io.readRemaining
+import io.ktor.utils.io.readText
+import io.ktor.utils.io.toByteArray
+import java.io.File
+import java.io.FileOutputStream
 
 fun Application.configureRouting() {
 
@@ -133,6 +145,140 @@ fun Application.configureRouting() {
 //        typeSafeRoutes()
 //        dynamicRoutes()
 
+
+//        Handling Request Payload Data in Ktor
+//        1.Text Data
+        post("greet"){
+            val name = call.receiveText()
+            call.respondText("Hello $name!")
+//            if we hit endpoint http://0.0.0.0:8080/greet with post request with body:-raw and type Text with value
+//            ktor then the output will be Hello Ktor!
+        }
+
+//        2.Data with byte read channel
+        post("channel"){
+            val channel = call.receiveChannel()
+
+            val text = channel.readRemaining().readText()
+
+            call.respondText(text)
+/**            if we hit endpoint http://0.0.0.0:8080/channel with post request with body:-raw and type Text with value
+            Ktor is kotlin backend framework then the output will be Ktor is kotlin backend framework
+
+            it is more efficient since it does not load entire data in memory, and it handles data in chunks, it becomes
+            more handy when we work with large data
+    */
+        }
+//        3.File uploading
+        /**
+// ==========================
+// 🔹 FILE UPLOADING IN KTOR
+// ==========================
+// This route demonstrates different ways to upload files in Ktor:
+//
+// 1. ByteArray  → Simple but loads entire file in memory ❌
+// 2. Stream     → Better, uses InputStream ⚠️
+// 3. Channel    → Best approach (non-blocking, scalable) ✅
+// ==========================
+        */
+
+        post("upload") {
+
+            // ==========================
+            // 📁 STEP 1: CREATE FILE
+            // ==========================
+            // - File will be stored in "uploads/" directory
+            // - mkdirs() ensures directory exists
+            // - Static name → will overwrite every upload (not ideal)
+
+            val file = File("uploads/sample2.jpg").apply {
+                parentFile?.mkdirs()
+            }
+
+
+          /**  // ==========================
+            // 🟡 METHOD 1: BYTE ARRAY
+            // ==========================
+            // - Reads entire file into memory
+            // - Not suitable for large files
+
+            /*
+            val byteArray = call.receive<ByteArray>()
+            file.writeBytes(byteArray)
+            */
+
+
+            // ==========================
+            // 🟠 METHOD 2: STREAM
+            // ==========================
+            // - Uses InputStream
+            // - More memory efficient than ByteArray
+
+            /*
+            val stream = call.receiveStream()
+            FileOutputStream(file).use { outputStream ->
+                stream.copyTo(outputStream, bufferSize = 16 * 1024)
+            }
+            */
+
+
+            // ==========================
+            // 🟢 METHOD 3: CHANNEL (BEST)
+            // ==========================
+            // - Non-blocking (coroutines-based)
+            // - Efficient for large files
+            // - Recommended in production
+          */
+
+            val channel = call.receiveChannel()
+
+            // copyAndClose → safely copies data & closes channel
+            // writeChannel() → writes data into file
+            channel.copyAndClose(file.writeChannel())
+
+
+            // ==========================
+            // 📤 RESPONSE
+            // ==========================
+            call.respondText("File upload successful!")
+        }
+
+/**
+// ==========================
+// 🔄 FLOW SUMMARY
+// ==========================
+// Client uploads file
+// → Server receives data (ByteArray / Stream / Channel)
+// → Writes file to disk
+// → Sends response
+
+
+// ==========================
+// ⚠️ IMPORTANT NOTES
+// ==========================
+// - Static file name → overwrites existing file
+// - No validation (file type, size, security)
+// - No error handling
+// - Local storage only (not scalable)
+
+// ✅ Production Improvements:
+// - Use dynamic file names (UUID / timestamp)
+// - Validate file type (jpg, png, etc.)
+// - Limit file size
+// - Use cloud storage (AWS S3 / Firebase)
+
+
+// ==========================
+// 🔥 INTERVIEW POINTS
+// ==========================
+// - call.receive<ByteArray>() → simple but memory heavy
+// - call.receiveStream() → blocking IO, better than ByteArray
+// - call.receiveChannel() → non-blocking, best approach
+
+// ⭐ Key Insight:
+// Channel-based upload is preferred in Ktor
+// for scalable and efficient file handling
+        */
     }
 
 }
@@ -143,12 +289,13 @@ class Blogs(val sort : String? = "new"){
 
     @Resource("{id}")
     data class Blog(val parent : Blogs = Blogs(), val id : String)
-//    here we are specifying that there is a path blogs with query parameter sort by default its value will
+/**    here we are specifying that there is a path blogs with query parameter sort by default its value will
 //    be new and we take path parameter id :- blogs/{id}?sort=new
 
 //    the reason to take parent Blogs as parameter of data class Blog is that without it we wont be
 //    able to link this id with the earlier path blogs, we can give any name to parent variable ,
 //    in short we need a default instance of the  parent class we are   referring in the path
+*/
 }
 
 //        Nested routing
