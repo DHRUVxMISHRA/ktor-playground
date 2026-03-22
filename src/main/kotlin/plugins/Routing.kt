@@ -1,6 +1,7 @@
 package com.example.plugins
 
 
+import com.example.plugins.lecture.handlingFormData
 import io.ktor.http.*
 import io.ktor.resources.*
 import io.ktor.server.application.*
@@ -345,7 +346,8 @@ fun Application.configureRouting() {
         // - @Serializable → required for JSON conversion
          */
 
-
+//       HandlingFormData
+        handlingFormData()
     }
 }
 //        type safe routing
