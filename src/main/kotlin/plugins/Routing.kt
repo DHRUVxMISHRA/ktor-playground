@@ -1,7 +1,9 @@
 package com.example.plugins
 
 
+
 import com.example.plugins.lecture.handlingFormData
+import com.example.plugins.lecture.statusPages
 import io.ktor.http.*
 import io.ktor.resources.*
 import io.ktor.server.application.*
@@ -348,6 +350,9 @@ fun Application.configureRouting() {
 
 //       HandlingFormData
         handlingFormData()
+
+//        Status Pages
+        statusPages()
     }
 }
 //        type safe routing
