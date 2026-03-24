@@ -159,8 +159,69 @@ fun Application.configureStatusPages(){
             filePattern = "errors/error#.html"
         )
 
+        // ==========================
+// 🔥 4. REQUEST VALIDATION EXCEPTION HANDLER
+// ==========================
         exception<RequestValidationException> { call, cause ->
-            call.respond(HttpStatusCode.BadRequest, mapOf("errors" to cause.reasons))
+
+            /*
+            🧠 WHAT IS HAPPENING:
+
+            - This handles validation errors thrown by RequestValidation plugin
+
+            - Whenever validation fails:
+                ValidationResult.Invalid("error message")
+
+            → Ktor throws:
+                RequestValidationException
+
+            - Instead of default response,
+              we intercept it here
+            */
+
+
+            /*
+            🔄 FLOW:
+
+            Client → sends invalid request
+            → RequestValidation plugin runs
+            → validation fails
+            → RequestValidationException thrown
+            → StatusPages intercepts
+            → THIS block executes
+            → custom response sent
+            */
+
+
+            /*
+            📌 RESPONSE FORMAT:
+
+            {
+              "errors": [
+                "Invalid product name",
+                "Invalid price"
+              ]
+            }
+
+            👉 cause.reasons = list of all validation error messages
+            */
+
+
+            /*
+            ❗ WHY WE USE THIS?
+
+            - Default Ktor validation response is not user-friendly
+            - We want structured JSON response (like real APIs)
+
+            ✅ Best Practice:
+            Always handle validation errors globally
+            */
+
+
+            call.respond(
+                HttpStatusCode.BadRequest,
+                mapOf("errors" to cause.reasons)
+            )
         }
     }
 }
