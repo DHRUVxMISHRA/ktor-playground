@@ -1,5 +1,6 @@
 package com.example
 
+import com.example.plugins.configureRequestValidation
 import com.example.plugins.configureResources
 import com.example.plugins.configureRouting
 import com.example.plugins.configureSerialization
@@ -15,4 +16,5 @@ fun Application.module() {
     configureRouting()
     configureSerialization()
     configureStatusPages()
+    configureRequestValidation()
 }

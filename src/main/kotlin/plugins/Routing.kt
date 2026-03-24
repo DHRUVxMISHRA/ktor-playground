@@ -3,6 +3,7 @@ package com.example.plugins
 
 
 import com.example.plugins.lecture.handlingFormData
+import com.example.plugins.lecture.requestValidation
 import com.example.plugins.lecture.statusPages
 import io.ktor.http.*
 import io.ktor.resources.*
@@ -353,6 +354,9 @@ fun Application.configureRouting() {
 
 //        Status Pages
         statusPages()
+
+//        Request validation
+        requestValidation()
     }
 }
 //        type safe routing
