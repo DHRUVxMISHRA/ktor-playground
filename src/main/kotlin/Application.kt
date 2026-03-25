@@ -5,6 +5,7 @@ import com.example.plugins.configureResources
 import com.example.plugins.configureRouting
 import com.example.plugins.configureSerialization
 import com.example.plugins.configureStatusPages
+import com.example.plugins.configureRateLimit
 import io.ktor.server.application.*
 
 fun main(args: Array<String>) {
@@ -13,8 +14,11 @@ fun main(args: Array<String>) {
 
 fun Application.module() {
     configureResources()
+//    configureRateLimit function should be called before configureRouting function
+    configureRateLimit()
     configureRouting()
     configureSerialization()
     configureStatusPages()
     configureRequestValidation()
+
 }

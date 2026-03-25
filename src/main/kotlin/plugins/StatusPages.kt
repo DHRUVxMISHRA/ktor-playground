@@ -5,6 +5,7 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.plugins.requestvalidation.RequestValidationException
 import io.ktor.server.plugins.statuspages.StatusPages
+import io.ktor.server.plugins.statuspages.exception
 import io.ktor.server.plugins.statuspages.statusFile
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondText
@@ -223,5 +224,65 @@ fun Application.configureStatusPages(){
                 mapOf("errors" to cause.reasons)
             )
         }
+
+//        now on applying rate limiting we are getting code 429 too many request so we are customizing it show a message// ==========================
+//// 🔥 5. RATE LIMIT EXCEPTION HANDLER (429)
+//// ==========================
+//status(HttpStatusCode.TooManyRequests){ call, code ->
+//
+//    /*
+//    🧠 WHAT IS HAPPENING:
+//
+//    - This handles rate limiting errors
+//    - When client exceeds allowed request limit,
+//      RateLimit plugin automatically returns:
+//
+//        429 Too Many Requests
+//
+//    - Instead of default response,
+//      we intercept and customize it here
+//    */
+//
+//
+//    /*
+//    🔄 FLOW:
+//
+//    Client → sends multiple requests
+//    → RateLimit plugin checks limit
+//    → limit exceeded
+//    → 429 TooManyRequests triggered
+//    → StatusPages intercepts
+//    → THIS block executes
+//    → custom response sent
+//    */
+//
+//
+//    /*
+//    📌 Retry-After HEADER:
+//
+//    - Provided automatically by RateLimit plugin
+//    - Tells client how long to wait before next request
+//
+//    Example:
+//    Retry-After: 60
+//
+//    👉 Means:
+//    Wait 60 seconds before retrying
+//    */
+//
+//    val retryAfter = call.response.headers["Retry-After"]
+//
+//
+//    /*
+//    📌 RESPONSE FORMAT:
+//
+//    429 : Too many request. Wait for 60 seconds.
+//    */
+//
+//    call.respondText(
+//        text = "429 : Too many request. Wait for $retryAfter seconds.",
+//        status = code
+//    )
+//}
     }
 }

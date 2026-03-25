@@ -3,6 +3,7 @@ package com.example.plugins
 
 
 import com.example.plugins.lecture.handlingFormData
+import com.example.plugins.lecture.rateLimiting
 import com.example.plugins.lecture.requestValidation
 import com.example.plugins.lecture.statusPages
 import io.ktor.http.*
@@ -357,6 +358,9 @@ fun Application.configureRouting() {
 
 //        Request validation
         requestValidation()
+
+//        Rate limiting
+        rateLimiting()
     }
 }
 //        type safe routing
