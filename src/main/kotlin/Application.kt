@@ -1,5 +1,7 @@
 package com.example
 
+import com.example.plugins.configureAutoHeadResponse
+import com.example.plugins.configurePartialContent
 import com.example.plugins.configureRequestValidation
 import com.example.plugins.configureResources
 import com.example.plugins.configureRouting
@@ -20,5 +22,7 @@ fun Application.module() {
     configureSerialization()
     configureStatusPages()
     configureRequestValidation()
+    configurePartialContent()
+    configureAutoHeadResponse()
 
 }
