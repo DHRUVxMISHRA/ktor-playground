@@ -6,6 +6,7 @@ import com.example.plugins.lecture.handlingFormData
 import com.example.plugins.lecture.rateLimiting
 import com.example.plugins.lecture.requestValidation
 import com.example.plugins.lecture.sendingResponse
+import com.example.plugins.lecture.servingContents
 import com.example.plugins.lecture.statusPages
 import io.ktor.http.*
 import io.ktor.resources.*
@@ -365,7 +366,12 @@ fun Application.configureRouting() {
 
 //        Sending response
         sendingResponse()
+
+//      Serving Content
+        servingContents()
     }
+
+
 }
 //        type safe routing
 //        for doing type safe routing we need to add serialization and resources plugin
