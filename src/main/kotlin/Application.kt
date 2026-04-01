@@ -2,6 +2,7 @@ package com.example
 
 import com.example.plugins.configureAutoHeadResponse
 import com.example.plugins.configureBasicAuthentication
+import com.example.plugins.configureBearerAuthentication
 import com.example.plugins.configureDigestAuthentication
 import com.example.plugins.configurePartialContent
 import com.example.plugins.configureRequestValidation
@@ -23,7 +24,9 @@ fun Application.module() {
 //    configureBasicAuthentication function should be called before configureRouting function
 //    configureBasicAuthentication()
 //    configureDigestAuthentication function should be called before configureRouting function
-    configureDigestAuthentication()
+//    configureDigestAuthentication()
+//    configureBearerAuthentication function should be called before configureRouting function
+    configureBearerAuthentication()
     configureRouting()
     configureSerialization()
     configureStatusPages()
