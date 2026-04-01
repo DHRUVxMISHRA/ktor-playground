@@ -1,6 +1,7 @@
 package com.example
 
 import com.example.plugins.configureAutoHeadResponse
+import com.example.plugins.configureBasicAuthentication
 import com.example.plugins.configurePartialContent
 import com.example.plugins.configureRequestValidation
 import com.example.plugins.configureResources
@@ -18,11 +19,14 @@ fun Application.module() {
     configureResources()
 //    configureRateLimit function should be called before configureRouting function
     configureRateLimit()
+//    configureBasicAuthentication function should be called before configureRouting function
+    configureBasicAuthentication()
     configureRouting()
     configureSerialization()
     configureStatusPages()
     configureRequestValidation()
     configurePartialContent()
     configureAutoHeadResponse()
+
 
 }
