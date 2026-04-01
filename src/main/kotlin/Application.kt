@@ -2,6 +2,7 @@ package com.example
 
 import com.example.plugins.configureAutoHeadResponse
 import com.example.plugins.configureBasicAuthentication
+import com.example.plugins.configureDigestAuthentication
 import com.example.plugins.configurePartialContent
 import com.example.plugins.configureRequestValidation
 import com.example.plugins.configureResources
@@ -20,7 +21,9 @@ fun Application.module() {
 //    configureRateLimit function should be called before configureRouting function
     configureRateLimit()
 //    configureBasicAuthentication function should be called before configureRouting function
-    configureBasicAuthentication()
+//    configureBasicAuthentication()
+//    configureDigestAuthentication function should be called before configureRouting function
+    configureDigestAuthentication()
     configureRouting()
     configureSerialization()
     configureStatusPages()

@@ -3,6 +3,7 @@ package com.example.plugins
 
 
 import com.example.plugins.lecture.basicAuthentication
+import com.example.plugins.lecture.digestAuthentication
 import com.example.plugins.lecture.handlingFormData
 import com.example.plugins.lecture.rateLimiting
 import com.example.plugins.lecture.requestValidation
@@ -373,6 +374,9 @@ fun Application.configureRouting() {
 
 //      Basic Authentication
         basicAuthentication()
+
+//      Digest Authentication
+        digestAuthentication()
     }
 
 
