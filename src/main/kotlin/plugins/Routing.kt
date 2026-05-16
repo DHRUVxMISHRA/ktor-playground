@@ -10,6 +10,7 @@ import com.example.plugins.lecture.rateLimiting
 import com.example.plugins.lecture.requestValidation
 import com.example.plugins.lecture.sendingResponse
 import com.example.plugins.lecture.servingContents
+import com.example.plugins.lecture.sessionAuthentication
 import com.example.plugins.lecture.statusPages
 import io.ktor.http.*
 import io.ktor.resources.*
@@ -36,7 +37,7 @@ import java.io.FileOutputStream
 fun Application.configureRouting() {
 
     //we can use routing with another way using install function
-    install(RoutingRoot) {
+   /** install(RoutingRoot) {
 //        there is two methods to use methods like get post and more
 //        1.method first
 //        get {  }
@@ -48,11 +49,12 @@ fun Application.configureRouting() {
             }
         }
     }
+   */
 
-    routing {
-        get("/") {
-            call.respondText("Hello World!")
-        }
+     routing {
+//        get("/") {
+//            call.respondText("Hello World!")
+//        }
         //on calling the route / we will get output hello dhruv because if we have two routes with same
         // path route that are written above will execute
 
@@ -380,11 +382,15 @@ fun Application.configureRouting() {
 //        digestAuthentication()
 
 //       Bearer Authentication
-        bearerAuthentication()
-    }
+//        bearerAuthentication()
+
+//      Session Authentication
+        sessionAuthentication()
+
 
 
 }
+    }
 //        type safe routing
 //        for doing type safe routing we need to add serialization and resources plugin
 @Resource("blogs")

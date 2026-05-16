@@ -29,4 +29,5 @@ dependencies {
     implementation(libs.ktor.server.auto.head.response)
     implementation(libs.ktor.server.partial.content)
     implementation(libs.ktor.server.auth)
+    implementation(libs.ktor.server.sessions)
 }

@@ -11,6 +11,8 @@ import com.example.plugins.configureRouting
 import com.example.plugins.configureSerialization
 import com.example.plugins.configureStatusPages
 import com.example.plugins.configureRateLimit
+import com.example.plugins.configureSession
+import com.example.plugins.configureSessionAuthentication
 import io.ktor.server.application.*
 
 fun main(args: Array<String>) {
@@ -26,10 +28,14 @@ fun Application.module() {
 //    configureDigestAuthentication function should be called before configureRouting function
 //    configureDigestAuthentication()
 //    configureBearerAuthentication function should be called before configureRouting function
-    configureBearerAuthentication()
+//    configureBearerAuthentication()
+//    configureSession function should be called before configureRouting function
+    configureSession()
+//    configureSessionAuthentication function should be called before configureRouting function
+    configureSessionAuthentication()
     configureRouting()
     configureSerialization()
-    configureStatusPages()
+//    configureStatusPages()
     configureRequestValidation()
     configurePartialContent()
     configureAutoHeadResponse()
