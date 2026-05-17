@@ -23,11 +23,20 @@ dependencies {
     implementation(libs.ktor.server.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.server.resources)
+//    status pages dependency
     implementation(libs.ktor.server.status.pages)
+//    validation dependency
     implementation(libs.ktor.server.request.validation)
+//    rate limit dependency
     implementation(libs.ktor.server.rate.limit)
+//    head response dependency
     implementation(libs.ktor.server.auto.head.response)
+//    partial content dependency
     implementation(libs.ktor.server.partial.content)
+//    basic and digest authentication dependency
     implementation(libs.ktor.server.auth)
+//    session auth dependency
     implementation(libs.ktor.server.sessions)
+//    jwt auth dependency
+    implementation(libs.ktor.server.auth.jwt)
 }

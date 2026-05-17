@@ -2,6 +2,7 @@ package com.example.plugins
 
 
 
+import com.example.plugins.lecture.JWTAuthentication
 import com.example.plugins.lecture.basicAuthentication
 import com.example.plugins.lecture.bearerAuthentication
 import com.example.plugins.lecture.digestAuthentication
@@ -34,7 +35,7 @@ import kotlinx.serialization.Serializable
 import java.io.File
 import java.io.FileOutputStream
 
-fun Application.configureRouting() {
+fun Application.configureRouting(config : JWTConfig) {
 
     //we can use routing with another way using install function
    /** install(RoutingRoot) {
@@ -385,8 +386,10 @@ fun Application.configureRouting() {
 //        bearerAuthentication()
 
 //      Session Authentication
-        sessionAuthentication()
+//        sessionAuthentication()
 
+//         JWT Authentication
+         JWTAuthentication(config)
 
 
 }
